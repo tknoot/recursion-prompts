@@ -7,31 +7,96 @@
 // Example: 5! = 5 x 4 x 3 x 2 x 1 = 120
 // factorial(5); // 120
 var factorial = function(n) {
+    if (n < 0) {
+        return null;
+    }
+    if (n === 0) {
+        return 1;
+    }
+    return n * factorial(n - 1);
 };
 
 // 2. Compute the sum of an array of integers.
 // sum([1,2,3,4,5,6]); // 21
 var sum = function(array) {
+    let input = array.slice();
+    if (input.length === 0) {
+        return 0;
+    }
+    if (input.length === 1) {
+        return array[0];
+    }
+    let n = input.pop();
+    return n + sum(input);
 };
 
 // 3. Sum all numbers in an array containing nested arrays.
 // arraySum([1,[2,3],[[4]],5]); // 15
 var arraySum = function(array) {
+    // let input = array.slice();
+    // if (input.length === 0) {
+    //     return 0;
+    // }
+    // let n = array.pop();
+    // if (typeof n === 'number' && input.length === 0) {
+    //     return n;
+    // }
+    // if (typeof n === 'number') {
+    //     return n + arraySum(input);
+    // }
+    // if (Array.isArray(n)) {
+    //     return arraySum(n) + arraySum(input);
+    // }
 };
 
 // 4. Check if a number is even.
 var isEven = function(n) {
+    n = Math.abs(n);
+    if (n === 0) {
+        return true;
+    } else if (n === 1) {
+        return false;
+    } else {
+        return isEven(n - 2);
+    }
 };
 
 // 5. Sum all integers below a given integer.
 // sumBelow(10); // 45
 // sumBelow(7); // 21
 var sumBelow = function(n) {
+    if (n === 0) {
+        return n;
+    }
+    let sign = Math.sign(n);
+    n -= sign;
+    return n + sumBelow(n);
 };
 
 // 6. Get the integers within a range (x, y).
 // range(2,9); // [3,4,5,6,7,8]
 var range = function(x, y) {
+    let result = [];
+    if (x === y) {
+        return result;
+    }
+    if (x > y) {
+        x -= 1;
+        if (x === y) {
+            return result;
+        }
+        result.push(x)
+        return result.concat(range(x, y));
+    }
+    if (x < y) {
+        x += 1;
+        if (x === y) {
+            return result;
+        }
+        result.push(x)
+        return result.concat(range(x, y));
+    }
+    // return result.concat(range(x, y?));
 };
 
 // 7. Compute the exponent of a number.
