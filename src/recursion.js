@@ -213,6 +213,28 @@ var multiply = function(x, y) {
 // 13. Write a function that divides two numbers without using the / operator or
 // Math methods to arrive at an approximate quotient (ignore decimal endings).
 var divide = function(x, y) {
+    if (y === 0) {
+        return NaN;
+    }
+    if (x === 0) {
+        return 0;
+    }
+    if (x < 0 && y < 0) {
+        return divide(-x, -y);
+    }
+    if (x < 0) {
+        if (x + y < 0) {
+            return -1 + divide(x + y, y);
+        }
+        return 0;
+    }
+    if (x >= y) {
+        if (x - y >= y) {
+            return 1 + divide(x - y, y);
+        }
+        return 1;
+    }
+    return 0;
 };
 
 // 14. Find the greatest common divisor (gcd) of two positive numbers. The GCD of two
@@ -221,6 +243,20 @@ var divide = function(x, y) {
 // http://www.cse.wustl.edu/~kjg/cse131/Notes/Recursion/recursion.html
 // https://www.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/the-euclidean-algorithm
 var gcd = function(x, y) {
+    if (x < 0 || y < 0) {
+        return null;
+    }
+    if (x === 0) {
+        return y;
+    }
+    if (y === 0) {
+        return x;
+    }
+    if (x < y) {
+        [x, y] = [y, x];
+    }
+    let rem = x % y;
+    return gcd(y, rem);
 };
 
 // 15. Write a function that compares each character of two strings and returns true if
@@ -228,21 +264,51 @@ var gcd = function(x, y) {
 // compareStr('house', 'houses') // false
 // compareStr('tomato', 'tomato') // true
 var compareStr = function(str1, str2) {
+    if (str1.length === 0 && str2.length === 0) {
+        return true;
+    }
+    let strArr1 = str1.split('');
+    let strArr2 = str2.split('');
+    let char1 = strArr1.shift();
+    let char2 = strArr2.shift();
+    if (char1 === char2) {
+        return compareStr(strArr1.join(''), strArr2.join(''));
+    }
+    return false;
 };
 
 // 16. Write a function that accepts a string and creates an array where each letter
 // occupies an index of the array.
 var createArray = function(str) {
+    let result = [];
+    if (str.length === 0) {
+        return result;
+    }
+    result.push(str.substr(0,1));
+    str = str.slice(1);
+    return result.concat(createArray(str));
 };
 
 // 17. Reverse the order of an array
 var reverseArr = function(array) {
+    let result = [];
+    if (array.length === 0) {
+        return result;
+    }
+    result.push(array.pop());
+    return result.concat(reverseArr(array));
 };
 
 // 18. Create a new array with a given value and length.
 // buildList(0,5) // [0,0,0,0,0]
 // buildList(7,3) // [7,7,7]
 var buildList = function(value, length) {
+    let result = [];
+    if (length === 0) {
+        return result;
+    }
+    result.push(value);
+    return result.concat(buildList(value, length - 1));
 };
 
 // 19. Implement FizzBuzz. Given integer n, return an array of the string representations of 1 to n.
@@ -251,6 +317,26 @@ var buildList = function(value, length) {
 // For numbers which are multiples of both three and five, output “FizzBuzz” instead of the number.
 // fizzBuzz(5) // ['1','2','Fizz','4','Buzz']
 var fizzBuzz = function(n) {
+    if (n === 1) {
+        return ['1'];
+    }
+    let result = [];
+    let string = '';
+    let modded = false;
+    if (n % 3 === 0) {
+        string += 'Fizz';
+        modded = true;
+    }
+    if (n % 5 === 0) {
+        string += 'Buzz';
+        modded = true;
+    }
+    if (!modded) {
+        string += n;
+    }
+    result[0] = string;
+    console.log(result);
+    return result.splice(0, 0, fizzBuzz(n - 1)[0]);
 };
 
 // 20. Count the occurence of a value in a list.
