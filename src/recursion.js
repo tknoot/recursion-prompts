@@ -616,13 +616,39 @@ var minimizeZeroes = function(array) {
 // alternateSign([2,7,8,3,1,4]) // [2,-7,8,-3,1,-4]
 // alternateSign([-2,-7,8,3,-1,4]) // [2,-7,8,-3,1,-4]
 var alternateSign = function(array) {
-    
+    let result = [];
+    if (array.length === 0) {
+        return result;
+    }
+    let shallow = array.slice();
+    let curr = Math.abs(shallow.shift());
+    result.push(curr);
+    let next = -1 * Math.abs(shallow.shift());
+    if (isNaN(next)) {
+        return result;
+    }
+    result.push(next);
+    return result.concat(alternateSign(shallow));
 };
 
 // 36. Given a string, return a string with digits converted to their word equivalent.
 // Assume all numbers are single digits (less than 10).
 // numToText("I have 5 dogs and 6 ponies"); // "I have five dogs and six ponies"
 var numToText = function(str) {
+    let result = [];
+    if (str.length === 0) {
+        return result;
+    }
+    const ref = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+    let strArr = str.split(' ');
+    let word = strArr.shift();
+    let num = parseInt(word);
+    if (isNaN(num)) {
+        result.push(word);
+    } else {
+        result.push(ref[num]);
+    }
+    return result.concat(numToText(strArr.join(' '))).join(' ');
 };
 
 
