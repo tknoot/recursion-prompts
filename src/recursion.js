@@ -371,12 +371,17 @@ var rMap = function(array, callback) {
 // countKeysInObj(obj, 'r') // 1
 // countKeysInObj(obj, 'e') // 2
 var countKeysInObj = function(obj, key) {
+    let count = 0;
     for (let k in obj) {
-        if (k === key) {
-            return 1 + countKeysInObj()
+        let value = obj[k];
+        if (typeof value === 'object') {
+            count += countKeysInObj(value, key);
         }
-        // let value = obj[k];
+        if (k === key) {
+            count++;
+        }
     }
+    return count;
 };
 
 // 23. Write a function that counts the number of times a value occurs in an object.
@@ -384,11 +389,33 @@ var countKeysInObj = function(obj, key) {
 // countValuesInObj(obj, 'r') // 2
 // countValuesInObj(obj, 'e') // 1
 var countValuesInObj = function(obj, value) {
+    let count = 0;
+    for (let k in obj) {
+        let val = obj[k];
+        if (typeof val === 'object') {
+            count += countValuesInObj(val, value);
+        }
+        if (val === value) {
+            count++;
+        }
+    }
+    return count;
 };
 
 // 24. Find all keys in an object (and nested oxbjects) by a provided name and rename
 // them to a provided new name while preserving the value stored at that key.
 var replaceKeysInObj = function(obj, oldKey, newKey) {
+    for (let k in obj) {
+        let val = obj[k];
+        if (typeof val === 'object') {
+            val = replaceKeysInObj(val, oldKey, newKey);
+        }
+        if (k === oldKey) {
+            obj[newKey] = obj[oldKey]
+            delete obj[oldKey];
+        }
+    }
+    return obj;
 };
 
 // 25. Get the first n Fibonacci numbers. In the Fibonacci sequence, each subsequent
@@ -397,6 +424,11 @@ var replaceKeysInObj = function(obj, oldKey, newKey) {
 // fibonacci(5); // [0,1,1,2,3,5]
 // Note: The 0 is not counted.
 var fibonacci = function(n) {
+    let result = [0, 1];
+    let l = result.length;
+    result[l] = result[l - 1] + result[l - 2];
+    
+
 };
 
 // 26. Return the Fibonacci number located at index n of the Fibonacci sequence.
