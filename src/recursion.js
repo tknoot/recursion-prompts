@@ -519,12 +519,35 @@ var nestedEvenSum = function(obj) {
 // 30. Flatten an array containing nested arrays.
 // flatten([1,[2],[3,[[4]]],5]); // [1,2,3,4,5]
 var flatten = function(array) {
-    
+    let result = [];
+    for (let i = 0; i < array.length; i++) {
+        let value = array[i];
+        if (Array.isArray(value)) {
+            result = result.concat(flatten(value));
+        } else {
+            result.push(value);
+        }
+    }
+    return result;
 };
 
 // 31. Given a string, return an object containing tallies of each letter.
 // letterTally('potato'); // {p:1, o:2, t:2, a:1}
 var letterTally = function(str, obj) {
+    if (obj === undefined) {
+        obj = {};
+    }
+    if (str.length === 0) {
+        return obj;
+    }
+    let strArr = str.split('');
+    let char = strArr.shift();
+    if (char in obj) {
+        obj[char]++;
+    } else {
+        obj[char] = 1;
+    }
+    return letterTally(strArr.join(''), obj);
 };
 
 // 32. Eliminate consecutive duplicates in a list. If the list contains repeated
@@ -533,18 +556,59 @@ var letterTally = function(str, obj) {
 // compress([1,2,2,3,4,4,5,5,5]) // [1,2,3,4,5]
 // compress([1,2,2,3,4,4,2,5,5,5,4,4]) // [1,2,3,4,2,5,4]
 var compress = function(list) {
+    if (list.length <= 1) {
+        return list;
+    }
+    let shallow = list.slice();
+    let result = [];
+    let curr = shallow.shift();
+    result.push(curr);
+    let next = shallow[0];
+    if (curr !== next) {
+        return result.concat(compress(shallow));
+    }
+    while (curr === next) {
+        curr = shallow.shift();
+        next = shallow[0];
+    }
+    return result.concat(compress(shallow));
 };
 
 // 33. Augment every element in a list with a new value where each element is an array
 // itself.
 // augmentElements([[],[3],[7]], 5); // [[5],[3,5],[7,5]]
 var augmentElements = function(array, aug) {
+    let result = [];
+    if (array.length === 0) {
+        return result;
+    }
+    let val = array.shift();
+    val.push(aug);
+    result.push(val);
+    return result.concat(augmentElements(array, aug));
 };
 
 // 34. Reduce a series of zeroes to a single 0.
 // minimizeZeroes([2,0,0,0,1,4]) // [2,0,1,4]
 // minimizeZeroes([2,0,0,0,1,0,0,4]) // [2,0,1,0,4]
 var minimizeZeroes = function(array) {
+    let result = [];
+    if (array.length === 0) {
+        return result;
+    }
+    let curr = array.shift();
+    result.push(curr);
+    let next = array[0];
+    if (curr === 0) {
+        if (curr !== next) {
+            return result.concat(minimizeZeroes(array));
+        }
+        while (curr === next) {
+            curr = array.shift();
+            next = array[0];
+        }
+    }
+    return result.concat(minimizeZeroes(array));
 };
 
 // 35. Alternate the numbers in an array between positive and negative regardless of
@@ -552,6 +616,7 @@ var minimizeZeroes = function(array) {
 // alternateSign([2,7,8,3,1,4]) // [2,-7,8,-3,1,-4]
 // alternateSign([-2,-7,8,3,-1,4]) // [2,-7,8,-3,1,-4]
 var alternateSign = function(array) {
+    
 };
 
 // 36. Given a string, return a string with digits converted to their word equivalent.
